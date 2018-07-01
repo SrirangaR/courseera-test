@@ -32,19 +32,19 @@ angular.module('app',[])
 		var service = this;
 
 		var buyItems = [
-		{name: "cookies",
-		 quantity: 10
-		},
-		{name: "chips",
-		 quantity: 20
-		},
-		{name: "cake",
-		 quantity: 5
-		},
-		{name: "carrots",
-		 quantity: 10
+		{name: "onion",
+		 quantity: 15
 		},
 		{name: "tomatoes",
+		 quantity: 20
+		},
+		{name: "Jalapenos",
+		 quantity: 5
+		},
+		{name: "beetroot",
+		 quantity: 10
+		},
+		{name: "spinach",
 		 quantity: 9
 		}];
 		//var buyItems = [{name:"a",quantity:10}];
