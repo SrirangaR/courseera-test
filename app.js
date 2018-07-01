@@ -1,54 +1,67 @@
 (function () {
-	'use strict';
+'use strict';
 
-	angular.module('LunchCheck',[]).controller('LunchCheckController', LunchCheckController);
+angular.module('app',[])
+.controller('ToBuyController', ToBuyController)
+.controller('AlreadyBoughtController', AlreadyBoughtController)
+.service('ShoppingListService', ShoppingListService);
 
-	LunchCheckController.$inject =['$scope'];
-
-	function LunchCheckController ($scope){
-		$scope.list = '';
-		$scope.msg = '';
-		$scope.fontStyle = {};
-		$scope.boxStyle = {};
+//To buy list
+	ToBuyController.$inject =['ShoppingListService'];
+	function ToBuyController (ShoppingListService){
+		var buy = this;
 		
-		$scope.checkItems = function () {
-			if($scope.list !== '') {
-				var arr = $scope.list.split(',');
-				var count =0;
-				for(var i =0; i<arr.length; i++){
-					if(arr[i].trim() !=='')
-						count++;
-				}
-				if(count > 0){
-					if(count <=3){
-						$scope.msg = 'Enjoy!';
-					}
-					else if(count > 3){
-						$scope.msg = 'Too much!'
-					}
-					$scope.fontStyle = {
-						"color":"green"
-					};
-					$scope.boxStyle = {
-						"border-color":"green"
-					};
-				}
-				else {
-					enterItems();
-				}
-			}
-			else {
-				enterItems();
-			}
-		}
-		var enterItems = function() {
-			$scope.msg = 'Please enter data first';
-				$scope.fontStyle = {
-					"color":"red"
-				};
-				$scope.boxStyle = {
-					"border-color":"red"
-				};
+		buy.items = ShoppingListService.buyItems();
+		
+		buy.removeItem = function(itemIndex){
+			ShoppingListService.bought(itemIndex);
 		};
+
 	}
+
+	//Already bought list
+	AlreadyBoughtController.$inject =['ShoppingListService'];
+	function AlreadyBoughtController (ShoppingListService){
+		var bought = this;
+		
+		bought.items = ShoppingListService.boughtItems();
+	}
+
+//Shopping list service
+	function ShoppingListService(){
+		var service = this;
+
+		var buyItems = [
+		{name: "cookies",
+		 quantity: 10
+		},
+		{name: "chips",
+		 quantity: 20
+		},
+		{name: "cake",
+		 quantity: 5
+		},
+		{name: "carrots",
+		 quantity: 10
+		},
+		{name: "tomatoes",
+		 quantity: 9
+		}];
+		//var buyItems = [{name:"a",quantity:10}];
+		var boughtItems = [];
+
+		service.bought = function(itemIndex) {
+			boughtItems.push(buyItems[itemIndex]);
+			buyItems.splice(itemIndex, 1);
+		};  
+
+		service.boughtItems = function(){
+			return boughtItems;
+		};
+
+		service.buyItems = function(){
+			return buyItems;
+		};
+	}	
+
 })();
